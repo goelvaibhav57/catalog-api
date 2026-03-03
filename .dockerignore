@@ -1,0 +1,32 @@
+# Git files
+.git
+.gitignore
+
+# IDE files
+.idea
+.vscode
+*.iml
+*.code-workspace
+
+# Build artifacts
+target/
+*.class
+*.jar
+
+# Maven
+.m2
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Documentation
+README.md
+HELP.md
+
+# Logs
+*.log
+
+# Other
+node_modules/
+
