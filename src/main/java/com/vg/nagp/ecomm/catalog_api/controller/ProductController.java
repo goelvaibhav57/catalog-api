@@ -7,7 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/products")
@@ -90,5 +93,21 @@ public class ProductController {
         }
         productService.deleteProduct(id);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Get service status
+     *
+     * @return ResponseEntity containing service status information
+     */
+    @GetMapping("/status")
+    public ResponseEntity<Map<String, Object>> getStatus() {
+        Map<String, Object> status = new HashMap<>();
+        status.put("service", "catalog-api");
+        status.put("status", "UP");
+        status.put("timestamp", LocalDateTime.now());
+        status.put("version", "1.0.0");
+
+        return ResponseEntity.ok(status);
     }
 }
