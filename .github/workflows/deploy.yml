@@ -44,10 +44,10 @@ jobs:
 
       - name: Tag Docker Image
         run: | 
-          docker tag catalog-api:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/catalog-api:latest
+          docker tag catalog-api:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/vg-naggp/catalog:latest
 
       - name: Push image to ECR
         run: | 
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/catalog-api:latest
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/vg-naggp/catalog:latest
 
                 
