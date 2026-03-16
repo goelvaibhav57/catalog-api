@@ -9,46 +9,45 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Code checkout
-      uses: actions/checkout@v4
-      
-    - name: Setup java
-      uses: actions/setup-java@v5
-      with:
-        distribution: 'temurin'
-        java-version: '17'
-    
-    - name: Build jar
-      run: |
-        chmod +x ./mvnw
-        ./mvnw clean package -DskipTests
+      - name: Code checkout
+        uses: actions/checkout@v4
 
-    - name: Verify jar exists
-      run: |
-        ls -la
-        ls -la target
-    
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Setup java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-    - name: Build docker Image
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/catalog-api:latest .
+      - name: Build jar
+        run: |
+          chmod +x ./mvnw
+          ./mvnw clean package -DskipTests
 
-    - name: Push image to Docker Hub
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/catalog-api:latest
+      - name: Verify jar exists
+        run: |
+          ls -la
+          ls -la target
 
-    - name: SSH and Deploy to EC2
-      uses: appleboy/ssh-action@v1
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_SSH_KEY }}
-        script: |
-          docker stop catalog-api || true
-          docker rm catalog-api || true
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/catalog-api:latest
-          docker run -d --name catalog-api -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/catalog-api:latest
-          
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build docker Image
+        run: docker build -t catalog-api .
+
+      - name: Tag Docker Image
+        run: | 
+          docker tag catalog-api:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/catalog-api:latest
+
+      - name: Push image to ECR
+        run: | 
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/catalog-api:latest
+
+                

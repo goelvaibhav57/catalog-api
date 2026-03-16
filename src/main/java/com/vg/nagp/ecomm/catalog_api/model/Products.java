@@ -4,6 +4,7 @@ package com.vg.nagp.ecomm.catalog_api.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -23,6 +24,7 @@ public class Products {
     private int reviews;
     private boolean inStock;
     private String sellerId;
+    private List<String> imageUrls;
 
     // Constructors
     public Products() {
@@ -30,7 +32,7 @@ public class Products {
     }
 
     public Products(String id, String name, String description, double price, double originalPrice,
-                    String category, String image, double rating, int reviews, boolean inStock, String sellerId) {
+                    String category, String image, double rating, int reviews, boolean inStock, String sellerId, List<String> imageUrls) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -42,6 +44,7 @@ public class Products {
         this.reviews = reviews;
         this.inStock = inStock;
         this.sellerId = sellerId;
+        this.imageUrls = imageUrls;
     }
     // Getters and Setters
     public String getId() {
@@ -111,6 +114,12 @@ public class Products {
     public void setSellerId(String sellerId) {
         this.sellerId = sellerId;
     }
+    public List<String> getImageUrls() {
+        return imageUrls;
+    }
+    public void setImageUrls(List<String> imageUrls) {
+        this.imageUrls = imageUrls;
+    }
 
     @Override
     public String toString() {
@@ -126,6 +135,7 @@ public class Products {
                 ", reviews=" + reviews +
                 ", inStock=" + inStock +
                 ", sellerId='" + sellerId + '\'' +
+                ", imageUrls=" + imageUrls +
                 '}';
     }
 }
