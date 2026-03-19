@@ -139,6 +139,6 @@ public class ProductController {
 
     @GetMapping("/hello")
     public ResponseEntity<String> hello() {
-        return ResponseEntity.ok("hello from catalog-api");
+        return ResponseEntity.ok("hello from catalog-api-1");
     }
 }
