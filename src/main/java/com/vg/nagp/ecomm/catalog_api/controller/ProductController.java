@@ -136,4 +136,9 @@ public class ProductController {
     public String upload(@RequestParam MultipartFile file) {
         return s3Service.uploadFile(file);
     }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        return ResponseEntity.ok("hello from catalog-api");
+    }
 }

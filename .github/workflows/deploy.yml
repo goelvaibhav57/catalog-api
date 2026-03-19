@@ -50,4 +50,22 @@ jobs:
         run: | 
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/vg-naggp/catalog:latest
 
+      - name: Update kubeconfig for EKS
+        run: |
+          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }}
+
+      - name: Deploy to Kubernetes
+        run: |
+          # Apply manifests
+          kubectl apply -f deployment.yaml
+          kubectl apply -f service.yaml
+          
+          # Restart deployment to ensure update
+          kubectl rollout restart deployment catalog-api || true
+
+      - name: Verify deployment
+        run: |
+          kubectl get pods
+          kubectl get svc
+
                 
