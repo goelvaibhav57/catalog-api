@@ -11,4 +11,7 @@ import java.util.List;
 public interface ProductRepository extends MongoRepository<Products, String> {
     // find products by sellerId
     List<Products> findBySellerId(String sellerId);
+
+    // find products by name or description containing the search term (case-insensitive)
+    List<Products> findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(String name, String description);
 }

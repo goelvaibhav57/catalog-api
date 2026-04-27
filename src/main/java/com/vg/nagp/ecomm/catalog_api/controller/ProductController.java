@@ -43,6 +43,21 @@ public class ProductController {
     }
 
     /**
+     * Search products by name or description
+     *
+     * @param query the search query
+     * @return ResponseEntity containing list of matching products
+     */
+    @GetMapping("/search")
+    public ResponseEntity<List<Products>> searchProducts(@RequestParam String query) {
+        List<Products> products = productService.searchProducts(query);
+        if (products.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(products);
+    }
+
+    /**
      * Get a product by ID
      *
      * @param id the product ID

@@ -38,6 +38,16 @@ public class ProductService {
     }
 
     /**
+     * Search products by name or description
+     *
+     * @param searchTerm the term to search for
+     * @return List of matching products
+     */
+    public List<Products> searchProducts(String searchTerm) {
+        return productRepository.findByNameContainingIgnoreCaseOrDescriptionContainingIgnoreCase(searchTerm, searchTerm);
+    }
+
+    /**
      * Save a new product
      *
      * @param product the product to save
